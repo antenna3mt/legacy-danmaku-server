@@ -1,0 +1,2 @@
+class Danmaku < ApplicationRecord
+end

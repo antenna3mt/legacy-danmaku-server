@@ -1,0 +1,2 @@
+module DanmakusHelper
+end
