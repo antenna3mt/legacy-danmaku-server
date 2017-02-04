@@ -1,8 +1,9 @@
-class CreateDanmakus < ActiveRecord::Migration[5.0]
+class CreateDanmakus < ActiveRecord::Migration
   def change
     create_table :danmakus do |t|
       t.text :content
-      t.integer :status
+      t.string :color
+      t.string :status
       t.timestamps
     end
   end

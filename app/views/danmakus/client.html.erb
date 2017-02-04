@@ -1,1 +1,53 @@
-Client
+<script>
+  var verifyCallback = function (response) {
+    $("#pushBtn").removeAttr("disabled")
+  }
+</script>
+<style>
+  .color-box {
+    margin: 5px 0;
+  }
+
+  .color-dot {
+    width: 100%;
+  }
+</style>
+<h1 class="text-center">Danmaku V3</h1>
+<%= form_tag create_path, method: 'post' do %>
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">Content</span>
+        <%= text_field_tag :content, @content.to_s, class: 'form-control' %>
+        <span class="input-group-btn"><%= submit_tag "Push", class: 'btn btn-default', id: 'pushBtn',disabled: 'disabled' %></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div id="recaptcha"></div>
+      <div class="g-recaptcha" data-sitekey="6Ld5OBgTAAAAAFd-TNprwnj96KurWMG3Nsx0hpFC" data-callback="verifyCallback"></div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <% Danmaku::Color.each do |color| %>
+            <div class="col-xs-3">
+              <div class="input-group color-box">
+                <span class="input-group-addon">
+                  <% if color.equal? Danmaku::Color.first %>
+                    <%= radio_button_tag :color, color, checked: 'checked' %>
+                  <% else %>
+                  <%= radio_button_tag :color, color %>
+                  <% end %>
+                </span>
+                <span class="form-control color-dot" style="background: <%= color %>"></span>
+              </div>
+            </div>
+        <% end %>
+      </div>
+
+    </div>
+    <div class="form-group small">
+      <p>Content length: no more than 30 characters.<br>
+        Frequence: at least 10 seconds between two pushes.
+      </p>
+    </div>
+
+<% end %>
