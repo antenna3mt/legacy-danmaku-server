@@ -1,1 +1,14 @@
-Review
+<div class="list-group" >
+  <% @danmakus.each do |danmaku| %>
+      <div class="list-group-item">
+        <p>
+          [<%= danmaku.status %>] [<%= danmaku.color %>] <b><%= danmaku.content %></b>
+        </p>
+        <p>
+          <%= link_to 'Approve', approve_path(id: danmaku.id, car: '718'), class:'btn btn-success' %>
+          <%= link_to 'Deny', deny_path(id: danmaku.id, car: '718'), class:'btn btn-danger' %>
+        </p>
+      </div>
+  <% end %>
+
+</div>

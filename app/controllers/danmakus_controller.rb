@@ -15,7 +15,7 @@ class DanmakusController < ApplicationController
     if not checkRecaptcha(params["g-recaptcha-response"])
       flash[:danger] = 'Robot Check Failed'
       render 'danmakus/client'
-    elsif (session[:time].nil?) or (Time.now.to_i - session[:time].to_i >= 10)
+    else
       session[:time] = Time.now.to_i
       d = Danmaku.new(content: @content, color: @color, status: 'raw')
       if d.save
@@ -28,16 +28,15 @@ class DanmakusController < ApplicationController
           render 'danmakus/client'
         end
       end
-    else
-      flash[:danger] = "Too Frequently"
-      render 'danmakus/client'
     end
   end
 
   # Review Use
   def review
     if params[:car] == '911'
-
+      @danmakus = Danmaku.where(status: 'raw')
+    elsif params[:car] == '917'
+      @danmakus = Danmaku.all
     else
       render json: com
     end
@@ -48,9 +47,9 @@ class DanmakusController < ApplicationController
       d = Danmaku.find(params[:id])
       d.status = 'approved'
       d.save!
-
     end
-    render json: com  end
+    redirect_to review_path(car: '911')
+  end
 
   def deny
     if params[:car] == '718'
@@ -58,12 +57,12 @@ class DanmakusController < ApplicationController
       d.status = 'denied'
       d.save!
     end
-    render json: com
+    redirect_to review_path(car: '911')
   end
 
   # Fetch Use
   def fetch
-    if params[:car].equal? '918'
+    if params[:car]== '918'
       @danmakus = Danmaku.where(status: 'approved')
       @danmakus.each do |danmaku|
         danmaku.status = "displayed"
