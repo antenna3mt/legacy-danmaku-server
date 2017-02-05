@@ -33,7 +33,7 @@ class DanmakusController < ApplicationController
 
   # Review Use
   def review
-    if params[:car] == '911'
+    if params[:car] == '900'
       @danmakus = Danmaku.where(status: 'raw')
     elsif params[:car] == '917'
       @danmakus = Danmaku.all
@@ -48,7 +48,7 @@ class DanmakusController < ApplicationController
       d.status = 'approved'
       d.save!
     end
-    redirect_to review_path(car: '911')
+    redirect_to review_path(car: '900')
   end
 
   def deny
@@ -57,7 +57,7 @@ class DanmakusController < ApplicationController
       d.status = 'denied'
       d.save!
     end
-    redirect_to review_path(car: '911')
+    redirect_to review_path(car: '900')
   end
 
   # Fetch Use
